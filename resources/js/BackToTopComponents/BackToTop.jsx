@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ArrowUp } from "lucide-react";
+import { ArrowUp, ChevronUp } from "lucide-react";
 
 const BackToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -31,9 +31,9 @@ const BackToTop = () => {
       {isVisible && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-8 left-8 p-3 rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 transition"
+          className="fixed bottom-8 right-8 p-3 rounded-full bg-gray-600 text-white shadow-lg hover:bg-gray-700 transition"
         >
-          <ArrowUp className="w-6 h-6" />
+          <ChevronUp className="w-6 h-6" />
         </button>
       )}
     </>

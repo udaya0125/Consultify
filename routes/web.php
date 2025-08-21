@@ -31,8 +31,8 @@ Route::get('/home',function(){
     return Inertia:: render('HomePage/Home');
 });
 
-// Route::get('/navbar',function(){
-//     return Inertia:: render('MainPage/Hero');
-// });
+Route::get('/aboutus',function(){
+    return Inertia:: render('MainPage/AboutUsPage');
+});
 
 require __DIR__.'/auth.php';

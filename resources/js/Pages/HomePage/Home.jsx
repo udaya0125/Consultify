@@ -1,3 +1,4 @@
+import BackToTop from '@/BackToTopComponents/BackToTop'
 import Footer from '@/BarComponents/Footer'
 import NavBar from '@/BarComponents/NavBar'
 import AboutUs from '@/MainComponents/AboutUs'
@@ -18,6 +19,7 @@ const Home = () => {
       <ChooseUs/>
       <BestUniversity/>
       <Testimonials/>
+      <BackToTop/>
       <Footer/>  
     </div>
   )

@@ -1,3 +1,4 @@
+import { Link } from "@inertiajs/react";
 import { Earth, GraduationCap, Handshake, Scroll } from "lucide-react";
 import React from "react";
 
@@ -73,9 +74,9 @@ const AboutUs = () => {
                     </div>
                 </div>
 
-                <button className="mt-6 px-6 py-3 bg-red-600 text-white rounded-xl font-medium shadow-md hover:bg-red-700 transition">
+                <Link href={`aboutus`} className="mt-6 px-6 py-3 bg-red-600 text-white rounded-xl font-medium shadow-md hover:bg-red-700 transition cursor-pointer">
                     Learn More
-                </button>
+                </Link>
             </div>
         </div>
     );
