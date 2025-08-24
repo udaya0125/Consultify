@@ -19,9 +19,9 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/analytics',function(){
+        return Inertia::render('MainDashboard/Analytics');
+    });
 });
 
 
@@ -30,9 +30,18 @@ Route::middleware('auth')->group(function () {
 Route::get('/home',function(){
     return Inertia:: render('HomePage/Home');
 });
-
+// route for the About Us Page
 Route::get('/aboutus',function(){
     return Inertia:: render('MainPage/AboutUsPage');
+});
+
+Route::get('/library/blog',function(){
+    return  Inertia::render('MainDashboard/BlogTableDetails');
+});
+
+
+Route::get('/blog',function(){
+    return  Inertia::render('MainPage/BlogDetails');
 });
 
 require __DIR__.'/auth.php';
