@@ -2,99 +2,101 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Users, Award, Globe, BookOpen } from "lucide-react";
 import Wrapper from "@/BarComponents/Wrapper";
+import parse from "html-react-parser";
 
-const BlogDetails = () => {
-    const skyVariants = {
-        animate: {
-            background: [
-                "linear-gradient(135deg, #0c4a6e 0%, #075985 25%, #0369a1 50%, #0284c7 75%, #0ea5e9 100%)",
-                "linear-gradient(135deg, #075985 0%, #0369a1 25%, #0284c7 50%, #0ea5e9 75%, #38bdf8 100%)",
-                "linear-gradient(135deg, #0369a1 0%, #0284c7 25%, #0ea5e9 50%, #38bdf8 75%, #7dd3fc 100%)",
-                "linear-gradient(135deg, #0284c7 0%, #0ea5e9 25%, #38bdf8 50%, #7dd3fc 75%, #bae6fd 100%)",
-                "linear-gradient(135deg, #0ea5e9 0%, #38bdf8 25%, #7dd3fc 50%, #bae6fd 75%, #e0f2fe 100%)",
-                "linear-gradient(135deg, #38bdf8 0%, #7dd3fc 25%, #bae6fd 50%, #e0f2fe 75%, #f0f9ff 100%)",
-                "linear-gradient(135deg, #7dd3fc 0%, #bae6fd 25%, #e0f2fe 50%, #f0f9ff 75%, #bae6fd 100%)",
-                "linear-gradient(135deg, #bae6fd 0%, #e0f2fe 25%, #f0f9ff 50%, #bae6fd 75%, #7dd3fc 100%)",
-                "linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 25%, #bae6fd 50%, #7dd3fc 75%, #38bdf8 100%)",
-                "linear-gradient(135deg, #f0f9ff 0%, #bae6fd 25%, #7dd3fc 50%, #38bdf8 75%, #0ea5e9 100%)",
-                "linear-gradient(135deg, #bae6fd 0%, #7dd3fc 25%, #38bdf8 50%, #0ea5e9 75%, #0284c7 100%)",
-                "linear-gradient(135deg, #7dd3fc 0%, #38bdf8 25%, #0ea5e9 50%, #0284c7 75%, #0369a1 100%)",
-                "linear-gradient(135deg, #38bdf8 0%, #0ea5e9 25%, #0284c7 50%, #0369a1 75%, #075985 100%)",
-                "linear-gradient(135deg, #0ea5e9 0%, #0284c7 25%, #0369a1 50%, #075985 75%, #0c4a6e 100%)",
-                "linear-gradient(135deg, #0c4a6e 0%, #075985 25%, #0369a1 50%, #0284c7 75%, #0ea5e9 100%)",
-            ],
-            transition: {
-                duration: 20,
-                ease: "easeInOut",
-                repeat: Infinity,
-                times: [
-                    0, 0.07, 0.14, 0.21, 0.28, 0.35, 0.42, 0.49, 0.56, 0.63,
-                    0.7, 0.77, 0.84, 0.91, 1,
-                ],
-            },
-        },
-    };
+const BlogDetails = ({ blog }) => {
+    console.log(blog);
+    // const skyVariants = {
+    //     animate: {
+    //         background: [
+    //             "linear-gradient(135deg, #0c4a6e 0%, #075985 25%, #0369a1 50%, #0284c7 75%, #0ea5e9 100%)",
+    //             "linear-gradient(135deg, #075985 0%, #0369a1 25%, #0284c7 50%, #0ea5e9 75%, #38bdf8 100%)",
+    //             "linear-gradient(135deg, #0369a1 0%, #0284c7 25%, #0ea5e9 50%, #38bdf8 75%, #7dd3fc 100%)",
+    //             "linear-gradient(135deg, #0284c7 0%, #0ea5e9 25%, #38bdf8 50%, #7dd3fc 75%, #bae6fd 100%)",
+    //             "linear-gradient(135deg, #0ea5e9 0%, #38bdf8 25%, #7dd3fc 50%, #bae6fd 75%, #e0f2fe 100%)",
+    //             "linear-gradient(135deg, #38bdf8 0%, #7dd3fc 25%, #bae6fd 50%, #e0f2fe 75%, #f0f9ff 100%)",
+    //             "linear-gradient(135deg, #7dd3fc 0%, #bae6fd 25%, #e0f2fe 50%, #f0f9ff 75%, #bae6fd 100%)",
+    //             "linear-gradient(135deg, #bae6fd 0%, #e0f2fe 25%, #f0f9ff 50%, #bae6fd 75%, #7dd3fc 100%)",
+    //             "linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 25%, #bae6fd 50%, #7dd3fc 75%, #38bdf8 100%)",
+    //             "linear-gradient(135deg, #f0f9ff 0%, #bae6fd 25%, #7dd3fc 50%, #38bdf8 75%, #0ea5e9 100%)",
+    //             "linear-gradient(135deg, #bae6fd 0%, #7dd3fc 25%, #38bdf8 50%, #0ea5e9 75%, #0284c7 100%)",
+    //             "linear-gradient(135deg, #7dd3fc 0%, #38bdf8 25%, #0ea5e9 50%, #0284c7 75%, #0369a1 100%)",
+    //             "linear-gradient(135deg, #38bdf8 0%, #0ea5e9 25%, #0284c7 50%, #0369a1 75%, #075985 100%)",
+    //             "linear-gradient(135deg, #0ea5e9 0%, #0284c7 25%, #0369a1 50%, #075985 75%, #0c4a6e 100%)",
+    //             "linear-gradient(135deg, #0c4a6e 0%, #075985 25%, #0369a1 50%, #0284c7 75%, #0ea5e9 100%)",
+    //         ],
+    //         transition: {
+    //             duration: 20,
+    //             ease: "easeInOut",
+    //             repeat: Infinity,
+    //             times: [
+    //                 0, 0.07, 0.14, 0.21, 0.28, 0.35, 0.42, 0.49, 0.56, 0.63,
+    //                 0.7, 0.77, 0.84, 0.91, 1,
+    //             ],
+    //         },
+    //     },
+    // };
 
     // Floating cloud shapes animation
-    const cloudVariants = {
-        animate: {
-            x: [0, 30, -20, 40, -15, 25, 0],
-            y: [0, -10, 15, -8, 20, -5, 0],
-            scale: [1, 1.1, 0.9, 1.15, 0.85, 1.05, 1],
-            opacity: [0.3, 0.6, 0.4, 0.7, 0.5, 0.8, 0.3],
-            transition: {
-                duration: 18,
-                ease: "easeInOut",
-                repeat: Infinity,
-                times: [0, 0.15, 0.3, 0.45, 0.6, 0.8, 1],
-            },
-        },
-    };
+    // const cloudVariants = {
+    //     animate: {
+    //         x: [0, 30, -20, 40, -15, 25, 0],
+    //         y: [0, -10, 15, -8, 20, -5, 0],
+    //         scale: [1, 1.1, 0.9, 1.15, 0.85, 1.05, 1],
+    //         opacity: [0.3, 0.6, 0.4, 0.7, 0.5, 0.8, 0.3],
+    //         transition: {
+    //             duration: 18,
+    //             ease: "easeInOut",
+    //             repeat: Infinity,
+    //             times: [0, 0.15, 0.3, 0.45, 0.6, 0.8, 1],
+    //         },
+    //     },
+    // };
 
     // Storm wave effect for the bottom portion
-    const stormWaveVariants = {
-        animate: {
-            clipPath: [
-                "ellipse(150% 100% at 50% 100%)",
-                "ellipse(160% 90% at 45% 100%)",
-                "ellipse(140% 110% at 55% 100%)",
-                "ellipse(170% 95% at 40% 100%)",
-                "ellipse(130% 105% at 60% 100%)",
-                "ellipse(150% 100% at 50% 100%)",
-            ],
-            background: [
-                "radial-gradient(ellipse at center, rgba(14, 165, 233, 0.8) 0%, rgba(3, 105, 161, 0.6) 50%, rgba(12, 74, 110, 0.4) 100%)",
-                "radial-gradient(ellipse at center, rgba(56, 189, 248, 0.7) 0%, rgba(14, 165, 233, 0.5) 50%, rgba(3, 105, 161, 0.3) 100%)",
-                "radial-gradient(ellipse at center, rgba(125, 211, 252, 0.6) 0%, rgba(56, 189, 248, 0.4) 50%, rgba(14, 165, 233, 0.2) 100%)",
-                "radial-gradient(ellipse at center, rgba(186, 230, 253, 0.5) 0%, rgba(125, 211, 252, 0.3) 50%, rgba(56, 189, 248, 0.1) 100%)",
-                "radial-gradient(ellipse at center, rgba(125, 211, 252, 0.6) 0%, rgba(56, 189, 248, 0.4) 50%, rgba(14, 165, 233, 0.2) 100%)",
-                "radial-gradient(ellipse at center, rgba(14, 165, 233, 0.8) 0%, rgba(3, 105, 161, 0.6) 50%, rgba(12, 74, 110, 0.4) 100%)",
-            ],
-            transition: {
-                duration: 15,
-                ease: "easeInOut",
-                repeat: Infinity,
-            },
-        },
-    };
+    // const stormWaveVariants = {
+    //     animate: {
+    //         clipPath: [
+    //             "ellipse(150% 100% at 50% 100%)",
+    //             "ellipse(160% 90% at 45% 100%)",
+    //             "ellipse(140% 110% at 55% 100%)",
+    //             "ellipse(170% 95% at 40% 100%)",
+    //             "ellipse(130% 105% at 60% 100%)",
+    //             "ellipse(150% 100% at 50% 100%)",
+    //         ],
+    //         background: [
+    //             "radial-gradient(ellipse at center, rgba(14, 165, 233, 0.8) 0%, rgba(3, 105, 161, 0.6) 50%, rgba(12, 74, 110, 0.4) 100%)",
+    //             "radial-gradient(ellipse at center, rgba(56, 189, 248, 0.7) 0%, rgba(14, 165, 233, 0.5) 50%, rgba(3, 105, 161, 0.3) 100%)",
+    //             "radial-gradient(ellipse at center, rgba(125, 211, 252, 0.6) 0%, rgba(56, 189, 248, 0.4) 50%, rgba(14, 165, 233, 0.2) 100%)",
+    //             "radial-gradient(ellipse at center, rgba(186, 230, 253, 0.5) 0%, rgba(125, 211, 252, 0.3) 50%, rgba(56, 189, 248, 0.1) 100%)",
+    //             "radial-gradient(ellipse at center, rgba(125, 211, 252, 0.6) 0%, rgba(56, 189, 248, 0.4) 50%, rgba(14, 165, 233, 0.2) 100%)",
+    //             "radial-gradient(ellipse at center, rgba(14, 165, 233, 0.8) 0%, rgba(3, 105, 161, 0.6) 50%, rgba(12, 74, 110, 0.4) 100%)",
+    //         ],
+    //         transition: {
+    //             duration: 15,
+    //             ease: "easeInOut",
+    //             repeat: Infinity,
+    //         },
+    //     },
+    // };
 
     // Atmospheric shimmer effect
-    const shimmerVariants = {
-        animate: {
-            background: [
-                "linear-gradient(45deg, transparent 0%, rgba(255, 255, 255, 0.1) 45%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.1) 55%, transparent 100%)",
-                "linear-gradient(45deg, transparent 20%, rgba(255, 255, 255, 0.1) 65%, rgba(255, 255, 255, 0.2) 70%, rgba(255, 255, 255, 0.1) 75%, transparent 100%)",
-                "linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.1) 85%, rgba(255, 255, 255, 0.2) 90%, rgba(255, 255, 255, 0.1) 95%, transparent 100%)",
-                "linear-gradient(45deg, transparent 0%, rgba(255, 255, 255, 0.1) 45%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.1) 55%, transparent 100%)",
-            ],
-            x: ["-100%", "100%", "100%", "-100%"],
-            transition: {
-                duration: 12,
-                ease: "easeInOut",
-                repeat: Infinity,
-            },
-        },
-    };
+    // const shimmerVariants = {
+    //     animate: {
+    //         background: [
+    //             "linear-gradient(45deg, transparent 0%, rgba(255, 255, 255, 0.1) 45%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.1) 55%, transparent 100%)",
+    //             "linear-gradient(45deg, transparent 20%, rgba(255, 255, 255, 0.1) 65%, rgba(255, 255, 255, 0.2) 70%, rgba(255, 255, 255, 0.1) 75%, transparent 100%)",
+    //             "linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.1) 85%, rgba(255, 255, 255, 0.2) 90%, rgba(255, 255, 255, 0.1) 95%, transparent 100%)",
+    //             "linear-gradient(45deg, transparent 0%, rgba(255, 255, 255, 0.1) 45%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.1) 55%, transparent 100%)",
+    //         ],
+    //         x: ["-100%", "100%", "100%", "-100%"],
+    //         transition: {
+    //             duration: 12,
+    //             ease: "easeInOut",
+    //             repeat: Infinity,
+    //         },
+    //     },
+    // };
 
     const topUniversities = [
         {
@@ -181,94 +183,61 @@ const BlogDetails = () => {
     return (
         <Wrapper>
             <div className="">
-                <motion.div
-                    className="bg-sky-800 h-[10rem] relative overflow-hidden"
-                    variants={skyVariants}
-                    animate="animate"
-                >
-                    {/* Floating Cloud Shapes */}
-                    <motion.div
+                <div className="bg-sky-800 h-[10rem] relative overflow-hidden">
+                   
+                    <div
                         className="absolute top-8 left-12 w-24 h-12 rounded-full"
                         style={{
                             background:
                                 "radial-gradient(ellipse, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 70%, transparent 100%)",
                         }}
-                        variants={cloudVariants}
-                        animate="animate"
                     />
 
-                    <motion.div
+                    <div
                         className="absolute top-16 right-20 w-32 h-8 rounded-full"
                         style={{
                             background:
                                 "radial-gradient(ellipse, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.08) 70%, transparent 100%)",
                         }}
-                        variants={cloudVariants}
-                        animate="animate"
-                        transition={{ delay: 2 }}
                     />
 
-                    <motion.div
+                    <div
                         className="absolute top-6 left-1/2 w-20 h-10 rounded-full"
                         style={{
                             background:
                                 "radial-gradient(ellipse, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.12) 70%, transparent 100%)",
                         }}
-                        variants={cloudVariants}
-                        animate="animate"
-                        transition={{ delay: 4 }}
                     />
 
-                    {/* Storm Wave Effect at Bottom */}
-                    <motion.div
-                        className="absolute bottom-0 left-0 right-0 h-20"
-                        variants={stormWaveVariants}
-                        animate="animate"
-                    />
+                    <div className="absolute bottom-0 left-0 right-0 h-20" />
 
-                    {/* Atmospheric Shimmer Layer */}
-                    <motion.div
-                        className="absolute inset-0 pointer-events-none"
-                        variants={shimmerVariants}
-                        animate="animate"
-                    />
-                    <motion.div
+                    <div className="absolute inset-0 pointer-events-none" />
+                    <div
                         className="absolute inset-0 pointer-events-none"
                         style={{
                             background:
                                 "linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.05) 70%, rgba(0, 0, 0, 0.1) 100%)",
                         }}
-                        animate={{
-                            opacity: [0.5, 0.8, 0.6, 0.9, 0.7, 0.5],
-                        }}
-                        transition={{
-                            duration: 14,
-                            ease: "easeInOut",
-                            repeat: Infinity,
-                        }}
                     />
-                </motion.div>
+                </div>
 
                 {/* Main Content Section */}
                 <div className="px-4 md:px-8 lg:px-28 py-12">
                     {/* Article Header */}
                     <div className="mb-12">
                         <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6 leading-tight">
-                            Best Universities in the UK 2024 - Complete
-                            University Rankings & Study Guide
+                            Best Universities in the {blog.title} 2025 -
+                            Complete University Rankings & Study Guide
                         </h1>
 
                         <p className="text-xl text-gray-600 leading-relaxed mb-8">
-                            Discover the top-ranked UK universities for 2024 and
-                            learn how our expert consultancy can help you secure
-                            admission to your dream institution with our proven
-                            track record of success.
+                            {blog.short_description}
                         </p>
 
                         {/* Featured Image */}
                         <div className="  rounded-xl mb-8 flex items-center justify-center relative overflow-hidden">
                             <img
-                                src="https://images.pexels.com/photos/612949/pexels-photo-612949.jpeg"
+                                src={`/storage/${blog.image}`}
                                 alt=""
                                 className="w-full h-[30rem] object-cover"
                             />
@@ -278,24 +247,7 @@ const BlogDetails = () => {
                     {/* Article Content */}
                     <div>
                         <p className="text-gray-700 leading-relaxed text-lg mb-6">
-                            In the QS World University Rankings 2024, there are
-                            90 UK universities, representing some of the world's
-                            most prestigious educational institutions. Four of
-                            these institutions are in the top ten globally, with
-                            another six in the top 50. The University of Oxford
-                            maintains its position as the leading UK university,
-                            ranked 5th globally, while Cambridge holds steady at
-                            7th place worldwide.
-                        </p>
-
-                        <p className="text-gray-700 leading-relaxed text-lg mb-8">
-                            These rankings are based on a comprehensive
-                            methodology that evaluates academic reputation,
-                            employer reputation, research impact,
-                            faculty-to-student ratio, and international
-                            diversity. For international students, choosing the
-                            right university is crucial for career success and
-                            personal development.
+                            {parse(blog.long_description)}
                         </p>
                     </div>
 

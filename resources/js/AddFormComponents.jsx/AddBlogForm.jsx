@@ -1,25 +1,10 @@
-import React, { useEffect, useState } from "react";
-import {
-    Upload,
-    MapPin,
-    Globe,
-    Award,
-    FileText,
-    Camera,
-    X,
-} from "lucide-react";
-import axios from "axios"; 
+import React, { useState } from "react";
+import { Upload, FileText, Camera, X } from "lucide-react";
+import axios from "axios";
+import ReactQuill from "react-quill"; 
+import "react-quill/dist/quill.snow.css"; 
 
-
-const BlogForm = ({
-    showForm,
-    setShowForm,
-    editing,
-    setEditing,
-    setReloadTrigger,
-    handleUpdate,
-    reloadTrigger,
-}) => {
+const AddBlogForm = ({ showForm, setShowForm, setReloadTrigger }) => {
     const [universityForm, setUniversityForm] = useState({
         title: "",
         image: "",
@@ -29,88 +14,41 @@ const BlogForm = ({
 
     const [imagePreview, setImagePreview] = useState(null);
 
-    // Reset form and image preview when `editing` changes
-    useEffect(() => {
-        if (editing) {
-            setUniversityForm({
-                title: editing.title || "",
-                image: null, // will be handled via file input
-                short_description: editing.short_description || "",
-                long_description: editing.long_description || "",
-            });
-            // Set image preview if editing and image exists
-            setImagePreview(editing.image_url || editing.image); // assuming backend sends image_url
-        } else {
-            setUniversityForm({
-                title: "",
-                image: "",
-                short_description: "",
-                long_description: "",
-            });
-            setImagePreview(null);
-        }
-    }, [editing]);
-
-    const handleCreate = async (formData) => {
-        try {
-            await axios.post(route("blogs.store"), formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data", // ✅ Fixed typo: 'type' → 'Type'
-                },
-            });
-            setReloadTrigger((prev) => !prev);
-        } catch (error) {
-            console.error("Error creating blog:", error.response || error);
-            throw error;
-        }
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData();
-        for (const key in universityForm) {
-            if (universityForm[key] !== null && universityForm[key] !== "") {
+        Object.keys(universityForm).forEach((key) => {
+            if (universityForm[key]) {
                 formData.append(key, universityForm[key]);
             }
-        }
+        });
 
         try {
-            if (editing) {
-                await handleUpdate(formData, editing.id);
-            } else {
-                await handleCreate(formData);
-            }
-
-            // Reset form
-            setUniversityForm({
-                title: "",
-                image: "",
-                short_description: "",
-                long_description: "",
+            await axios.post(route("blogs.store"), formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
             });
-            setImagePreview(null);
+            setReloadTrigger((prev) => !prev);
+            resetForm();
             setShowForm(false);
-            setEditing(null); // ✅ Fixed: was `Null`
         } catch (error) {
-            console.error("Error saving data:", error);
+            console.error("Error creating blog:", error.response?.data || error.message);
+            alert("Failed to create blog. Please try again.");
         }
     };
 
     const handleChange = (e) => {
-        const { name, value, type, files } = e.target;
-
-        if (type === "file") {
+        const { name, value, files } = e.target;
+        if (e.target.type === "file") {
             const file = files[0];
             if (file) {
                 setUniversityForm((prev) => ({
                     ...prev,
                     [name]: file,
                 }));
-
                 const reader = new FileReader();
-                reader.onloadend = () => {
-                    setImagePreview(reader.result);
-                };
+                reader.onloadend = () => setImagePreview(reader.result);
                 reader.readAsDataURL(file);
             }
         } else {
@@ -119,6 +57,26 @@ const BlogForm = ({
                 [name]: value,
             }));
         }
+    };
+
+    const handleQuillChange = (value) => {
+        const textOnly = value.replace(/<[^>]*>/g, ""); // Strip HTML for character count
+        if (textOnly.length <= 1000) {
+            setUniversityForm((prev) => ({
+                ...prev,
+                long_description: value,
+            }));
+        }
+    };
+
+    const resetForm = () => {
+        setUniversityForm({
+            title: "",
+            image: "",
+            short_description: "",
+            long_description: "",
+        });
+        setImagePreview(null);
     };
 
     return (
@@ -131,8 +89,7 @@ const BlogForm = ({
                 <button
                     onClick={() => {
                         setShowForm(false);
-                        setEditing(null); // ✅ Reset editing when closing
-                        setImagePreview(null); // ✅ Clear preview
+                        resetForm();
                     }}
                     className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
                 >
@@ -140,6 +97,8 @@ const BlogForm = ({
                 </button>
 
                 <form onSubmit={handleSubmit} className="p-8 space-y-8">
+                    <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Add New Blog</h2>
+
                     {/* Title */}
                     <div className="space-y-2">
                         <label className="flex items-center text-lg font-semibold text-gray-700">
@@ -196,7 +155,7 @@ const BlogForm = ({
                             Short Description
                         </label>
                         <textarea
-                            name="short_description" // ✅ Fixed: was shortDescription
+                            name="short_description"
                             value={universityForm.short_description}
                             onChange={handleChange}
                             rows="3"
@@ -210,34 +169,49 @@ const BlogForm = ({
                         </div>
                     </div>
 
-                    {/* Long Description */}
+                    {/* Long Description with React Quill */}
                     <div className="space-y-2">
                         <label className="flex items-center text-lg font-semibold text-gray-700">
                             <FileText className="mr-3 text-teal-500" size={22} />
                             Long Description
                         </label>
-                        <textarea
-                            name="long_description" // ✅ Fixed: was longDescription
-                            value={universityForm.long_description}
-                            onChange={handleChange}
-                            rows="6"
-                            maxLength="1000"
-                            className="w-full px-4 py-4 border-2 border-gray-200 rounded-xl focus:border-teal-500 focus:ring-4 focus:ring-teal-100 transition-all duration-300 text-lg resize-none"
-                            placeholder="Detailed description including history, programs, facilities, achievements, etc."
-                            required
-                        />
+                        <div className="border-2 border-gray-200 rounded-xl overflow-hidden focus-within:border-teal-500 transition-all duration-300">
+                            <ReactQuill
+                                value={universityForm.long_description}
+                                onChange={handleQuillChange}
+                                theme="snow"
+                                placeholder="Write a detailed description (e.g., history, programs, facilities, achievements...)"
+                                className="bg-white"
+                                style={{ height: "200px" }}
+                                modules={{
+                                    toolbar: [
+                                        [{ header: "1" }, { header: "2" }],
+                                        ["bold", "italic", "underline"],
+                                        [{ list: "ordered" }, { list: "bullet" }],
+                                        ["link"],
+                                        ["clean"],
+                                    ],
+                                }}
+                            />
+                        </div>
                         <div className="text-right text-sm text-gray-500">
-                            {universityForm.long_description.length}/1000 characters
+                            {universityForm.long_description.replace(/<[^>]*>/g, "").length}/1000 characters
+                            {universityForm.long_description.replace(/<[^>]*>/g, "").length > 900 && (
+                                <span className="block text-orange-500">
+                                    {universityForm.long_description.replace(/<[^>]*>/g, "").length > 1000
+                                        ? "Exceeded limit!"
+                                        : "Approaching limit!"}
+                                </span>
+                            )}
                         </div>
                     </div>
 
-                    {/* Submit Button */}
                     <div className="pt-6">
                         <button
                             type="submit"
                             className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:ring-4 focus:ring-purple-200"
                         >
-                            {editing ? "Update Blog" : "Create Blog"}
+                            Create Blog
                         </button>
                     </div>
                 </form>
@@ -246,4 +220,4 @@ const BlogForm = ({
     );
 };
 
-export default BlogForm;
+export default AddBlogForm;

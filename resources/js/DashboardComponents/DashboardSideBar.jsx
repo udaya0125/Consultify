@@ -4,8 +4,8 @@ import { Link } from '@inertiajs/react';
 import {
   Home, Users, UserCog, UserCircle, GraduationCap, Library,
   Bookmark, School, BookOpenCheck, CalendarDays, ListChecks,
-  BookText, Bell, Bus, Building, NotebookPen, CalendarCheck,
-  ClipboardEdit, MailWarning, BookKey, ChevronDown, ChevronRight,
+  BookText, Bell, NotebookPen, CalendarCheck,
+  ClipboardEdit, MailWarning, BookKey,  ChevronRight,
   LogOut, Settings, GraduationCap as GraduationCapIcon,
   CircleUserRound
 } from 'lucide-react';
@@ -18,7 +18,7 @@ const DashboardSideBar = () => {
   };
 
   const menuItems = [
-    { id: 'home', label: 'Dashboard', icon: Home, href: 'analytics', badge: null },
+    { id: 'home', label: 'Dashboard', icon: Home, href: '/analytics', badge: null },
     {
       id: 'students', label: 'Students', icon: Users, isDropdown: true, badge: '1,247',
       children: [
@@ -38,26 +38,26 @@ const DashboardSideBar = () => {
         { label: 'Exams', icon: ClipboardEdit, href: '/academics/exams' }
       ]
     },
-    {
-      id: 'management', label: 'Management', icon: Bookmark, isDropdown: true,
-      children: [
-        { label: 'Schedule', icon: CalendarDays, href: '/management/schedule' },
-        { label: 'Attendance', icon: ListChecks, href: '/management/attendance' },
-        { label: 'Events', icon: CalendarCheck, href: '/management/events' },
-        { label: 'Notices', icon: Bell, href: '/management/notices', badge: '3' },
-      ]
-    },
-    { id: 'teachers', label: 'Teachers', icon: GraduationCapIcon, href: '/teachers', badge: '84' },
+    // {
+    //   id: 'management', label: 'Management', icon: Bookmark, isDropdown: true,
+    //   children: [
+    //     { label: 'Schedule', icon: CalendarDays, href: '/management/schedule' },
+    //     { label: 'Attendance', icon: ListChecks, href: '/management/attendance' },
+    //     { label: 'Events', icon: CalendarCheck, href: '/management/events' },
+    //     { label: 'Notices', icon: Bell, href: '/management/notices', badge: '3' },
+    //   ]
+    // },
+    // { id: 'teachers', label: 'Teachers', icon: GraduationCapIcon, href: '/teachers', badge: '84' },
     {
       id: 'library', label: 'Library', icon: Library, isDropdown: true,
       children: [
         { label: 'Blog', icon: CircleUserRound, href: '/library/blog' },
-        { label: 'Attendance', icon: ListChecks, href: '/library/attendance' },
-        { label: 'Events', icon: CalendarCheck, href: '/library/events' },
+        { label: 'Teacher', icon: ListChecks, href: '/library/Teacher' },
+        { label: 'OurTeam', icon: CalendarCheck, href: '/library/ourteam' },
         { label: 'Notices', icon: Bell, href: '/library/notices' },
       ]
     },
-    { id: 'messages', label: 'Messages', icon: MailWarning, href: '/messages', badge: '12' },
+    { id: 'Chat', label: 'Chat', icon: MailWarning, href: '/chatbot', badge: '12' },
     { id: 'reports', label: 'Reports', icon: ClipboardEdit, href: '/reports' }
   ];
 
